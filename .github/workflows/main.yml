@@ -1,0 +1,20 @@
+name: Export Docker Image
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 1. 拉取 Clair3 官方镜像
+        run: docker pull hkubal/clair3:latest
+        
+      - name: 2. 将镜像打包成 tar 文件
+        run: docker save -o clair3_latest.tar hkubal/clair3:latest
+        
+      - name: 3. 上传为 GitHub Artifact 以供下载
+        uses: actions/upload-artifact@v4
+        with:
+          name: clair3-image-tar
+          path: clair3_latest.tar
